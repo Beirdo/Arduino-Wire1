@@ -63,14 +63,14 @@ void TwoWireOne::begin(void)
   txBufferIndex = 0;
   txBufferLength = 0;
 
-  twi_init();
+  twi1_init();
 }
 
 void TwoWireOne::begin(uint8_t address)
 {
-  twi_setAddress(address);
-  twi_attachSlaveTxEvent(onRequestService);
-  twi_attachSlaveRxEvent(onReceiveService);
+  twi1_setAddress(address);
+  twi1_attachSlaveTxEvent(onRequestService);
+  twi1_attachSlaveRxEvent(onReceiveService);
   begin();
 }
 
@@ -81,12 +81,12 @@ void TwoWireOne::begin(int address)
 
 void TwoWireOne::end(void)
 {
-  twi_disable();
+  twi1_disable();
 }
 
 void TwoWireOne::setClock(uint32_t clock)
 {
-  twi_setFrequency(clock);
+  twi1_setFrequency(clock);
 }
 
 uint8_t TwoWireOne::requestFrom(uint8_t address, uint8_t quantity, uint32_t iaddress, uint8_t isize, uint8_t sendStop)
@@ -114,7 +114,7 @@ uint8_t TwoWireOne::requestFrom(uint8_t address, uint8_t quantity, uint32_t iadd
     quantity = BUFFER_LENGTH;
   }
   // perform blocking read into buffer
-  uint8_t read = twi_readFrom(address, rxBuffer, quantity, sendStop);
+  uint8_t read = twi1_readFrom(address, rxBuffer, quantity, sendStop);
   // set rx buffer iterator vars
   rxBufferIndex = 0;
   rxBufferLength = read;
@@ -173,7 +173,7 @@ void TwoWireOne::beginTransmission(int address)
 uint8_t TwoWireOne::endTransmission(uint8_t sendStop)
 {
   // transmit buffer (blocking)
-  uint8_t ret = twi_writeTo(txAddress, txBuffer, txBufferLength, 1, sendStop);
+  uint8_t ret = twi1_writeTo(txAddress, txBuffer, txBufferLength, 1, sendStop);
   // reset tx buffer iterator vars
   txBufferIndex = 0;
   txBufferLength = 0;
@@ -210,7 +210,7 @@ size_t TwoWireOne::write(uint8_t data)
   }else{
   // in slave send mode
     // reply to master
-    twi_transmit(&data, 1);
+    twi1_transmit(&data, 1);
   }
   return 1;
 }
@@ -228,7 +228,7 @@ size_t TwoWireOne::write(const uint8_t *data, size_t quantity)
   }else{
   // in slave send mode
     // reply to master
-    twi_transmit(data, quantity);
+    twi1_transmit(data, quantity);
   }
   return quantity;
 }
