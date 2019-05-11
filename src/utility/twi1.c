@@ -182,7 +182,7 @@ uint8_t twi1_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t se
   }
   twi1_state = TWI1_MRX;
   twi1_sendStop = sendStop;
-  // reset error state (0xFF.. no error occured)
+  // reset error state (0xFF.. no error occurred)
   twi1_error = 0xFF;
 
   // initialize buffer iteration vars
@@ -261,7 +261,7 @@ uint8_t twi1_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wai
   }
   twi1_state = TWI1_MTX;
   twi1_sendStop = sendStop;
-  // reset error state (0xFF.. no error occured)
+  // reset error state (0xFF.. no error occurred)
   twi1_error = 0xFF;
 
   // initialize buffer iteration vars
@@ -286,7 +286,7 @@ uint8_t twi1_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wai
     // We need to remove ourselves from the repeated start state before we enable interrupts,
     // since the ISR is ASYNC, and we could get confused if we hit the ISR before cleaning
     // up. Also, don't enable the START interrupt. There may be one pending from the 
-    // repeated start that we sent outselves, and that would really confuse things.
+    // repeated start that we sent ourselves, and that would really confuse things.
     twi1_inRepStart = false;			// remember, we're dealing with an ASYNC ISR
     do {
       TWDR1 = twi1_slarw;				
@@ -394,7 +394,7 @@ void twi1_stop(void)
   // send stop condition
   TWCR1 = _BV(TWEN) | _BV(TWIE) | _BV(TWEA) | _BV(TWINT) | _BV(TWSTO);
 
-  // wait for stop condition to be exectued on bus
+  // wait for stop condition to be executed on bus
   // TWINT is not set after a stop condition!
   while(TWCR1 & _BV(TWSTO)){
     continue;
